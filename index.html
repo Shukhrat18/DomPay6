@@ -1092,8 +1092,10 @@
                     <td>${formatNumber(payment.amount)}</td>
                     <td>${formatNumber(remainAfter)}</td>
                     <td>
+                        ${userRole === 'admin' ? `
                         <button class="btn btn-warning btn-icon" onclick="editPayment(${i})">✏️</button>
                         <button class="btn btn-danger btn-icon" onclick="deletePayment(${i})">🗑️</button>
+                        ` : ''}
                     </td>
                 `;
                 tbody.appendChild(row);
@@ -1691,7 +1693,8 @@ function applyViewerMode() {
     setTimeout(() => {
         // Тугмаҳои функсионалӣ
         ['onclick*="saveContract"', 'onclick*="updateContract"', 'onclick*="deleteContract"', 
-         'onclick*="addPayment"', 'onclick*="importFrom"'].forEach(sel => {
+         'onclick*="addPayment"', 'onclick*="importFrom"',
+         'onclick*="editPayment"', 'onclick*="deletePayment"'].forEach(sel => {
             document.querySelectorAll(`[${sel}]`).forEach(el => el.style.display = 'none');
         });
 
