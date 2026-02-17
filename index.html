@@ -501,17 +501,19 @@
     <div id="mainApp" class="app-hidden">
     <div class="container">
         <header>
-            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+            <div style="display:flex; flex-direction:column; gap:10px;">
+                <!-- Сатри 1: Логотип -->
                 <div>
                     <h1>🏠 DomPay</h1>
                     <div class="subtitle">Идоракунии шартномаҳои хариди хона ва пардохтҳо</div>
                 </div>
-                <div style="display:flex; align-items:center; gap:10px;">
-                    <div id="syncStatus" style="display:inline-flex; align-items:center; gap:6px; padding:7px 14px; background:rgba(255,255,255,0.2); border-radius:8px; font-size:0.85rem;">
+                <!-- Сатри 2: Статус ва корбар -->
+                <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+                    <div id="syncStatus" style="display:inline-flex; align-items:center; gap:6px; padding:6px 12px; background:rgba(255,255,255,0.2); border-radius:8px; font-size:0.82rem;">
                         <span id="syncIcon">🔄</span>
                         <span id="syncText">Боргирӣ...</span>
                     </div>
-                    <div id="userInfoDiv" style="display:flex; align-items:center; gap:8px;"></div>
+                    <div id="userInfoDiv" style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;"></div>
                 </div>
             </div>
         </header>
@@ -1658,9 +1660,9 @@ function showMainApp() {
     const roleText = userRole === 'admin' ? '👑 Админ' : '👁️ Тамошобин';
     const roleColor = userRole === 'admin' ? '#10b981' : '#f59e0b';
     document.getElementById('userInfoDiv').innerHTML = `
-        <span style="font-size:0.82rem; opacity:0.9;">${currentUser.email}</span>
-        <span style="font-size:0.75rem; padding:4px 10px; background:${roleColor}; border-radius:20px; font-weight:600;">${roleText}</span>
-        <button onclick="doLogout()" style="padding:6px 12px; background:rgba(255,255,255,0.2); border:1px solid rgba(255,255,255,0.3); border-radius:6px; color:white; font-size:0.82rem; cursor:pointer;">🚪 Баромадан</button>
+        <span style="font-size:0.8rem; opacity:0.9; max-width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${currentUser.email}</span>
+        <span style="font-size:0.72rem; padding:3px 8px; background:${roleColor}; border-radius:20px; font-weight:600; white-space:nowrap;">${roleText}</span>
+        <button onclick="doLogout()" style="padding:5px 10px; background:rgba(255,255,255,0.2); border:1px solid rgba(255,255,255,0.3); border-radius:6px; color:white; font-size:0.78rem; cursor:pointer; white-space:nowrap;">🚪 Баромадан</button>
     `;
 
     document.getElementById('syncIcon').textContent = '✅';
