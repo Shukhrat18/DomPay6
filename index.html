@@ -4,6 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DomPay - Идоракунии шартномаҳои хариди хона</title>
+    <style id="login-styles">
+    /* ====== LOGIN STYLES ====== */
+    .login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; z-index: 99999; padding: 20px; }
+    .login-overlay.hidden { display: none !important; }
+    .login-box { background: white; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); width: 100%; max-width: 420px; padding: 40px; animation: loginSlide 0.3s ease; }
+    @keyframes loginSlide { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+    .login-logo { text-align: center; margin-bottom: 28px; }
+    .login-logo h1 { font-size: 2.2rem; color: #667eea; margin: 0; }
+    .login-logo p { color: #64748b; margin: 6px 0 0; }
+    .login-tabs { display: flex; border-bottom: 2px solid #e2e8f0; margin-bottom: 24px; }
+    .ltab { flex: 1; padding: 12px; background: none; border: none; border-bottom: 3px solid transparent; margin-bottom: -2px; cursor: pointer; font-size: 0.95rem; font-weight: 500; color: #64748b; transition: all 0.2s; }
+    .ltab.active { color: #667eea; border-bottom-color: #667eea; }
+    .lform { display: none; }
+    .lform.active { display: block; }
+    .lgroup { margin-bottom: 18px; }
+    .lgroup label { display: block; font-weight: 500; color: #1e293b; font-size: 0.88rem; margin-bottom: 6px; }
+    .lgroup input { width: 100%; padding: 11px 14px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 0.95rem; transition: border-color 0.2s; box-sizing: border-box; }
+    .lgroup input:focus { outline: none; border-color: #667eea; }
+    .lbtn { width: 100%; padding: 13px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .lbtn:hover { transform: translateY(-1px); box-shadow: 0 8px 16px rgba(102,126,234,0.3); }
+    .lbtn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .lerror { background: #fee2e2; color: #991b1b; padding: 10px 14px; border-radius: 8px; font-size: 0.88rem; margin-bottom: 16px; display: none; }
+    .lsuccess { background: #d1fae5; color: #065f46; padding: 10px 14px; border-radius: 8px; font-size: 0.88rem; margin-bottom: 16px; display: none; }
+    .lhint { font-size: 0.8rem; color: #94a3b8; margin-top: 4px; }
+    .app-hidden { display: none !important; }
+    </style>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
         
@@ -418,243 +444,74 @@
             font-size: 1.8rem;
             font-weight: 700;
         }
-        
-        /* LOGIN PAGE STYLES */
-        .login-page {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-        }
-        
-        .login-page.hidden {
-            display: none;
-        }
-        
-        .login-container {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            max-width: 400px;
-            width: 90%;
-            padding: 40px;
-            animation: slideIn 0.3s ease-out;
-        }
-        
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .login-logo {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .login-logo h1 {
-            font-size: 2.5rem;
-            color: #667eea;
-            margin-bottom: 8px;
-        }
-        
-        .login-logo p {
-            color: #64748b;
-            font-size: 0.95rem;
-        }
-        
-        .login-tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 30px;
-            border-bottom: 2px solid #e2e8f0;
-        }
-        
-        .login-tab {
-            flex: 1;
-            padding: 12px;
-            background: none;
-            border: none;
-            border-bottom: 3px solid transparent;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 500;
-            color: #64748b;
-            transition: all 0.2s;
-        }
-        
-        .login-tab.active {
-            color: #667eea;
-            border-bottom-color: #667eea;
-        }
-        
-        .login-form-group {
-            margin-bottom: 20px;
-        }
-        
-        .login-form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #1e293b;
-            font-size: 0.9rem;
-        }
-        
-        .login-form-group input {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: all 0.2s;
-        }
-        
-        .login-form-group input:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-        
-        .login-btn {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .login-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-        }
-        
-        .login-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        .login-error {
-            background: #fee2e2;
-            color: #991b1b;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
-            display: none;
-        }
-        
-        .login-success {
-            background: #d1fae5;
-            color: #065f46;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
-            display: none;
-        }
-        
-        .login-tab-content {
-            display: none;
-        }
-        
-        .login-tab-content.active {
-            display: block;
-        }
-        
-        .login-helper {
-            font-size: 0.85rem;
-            color: #64748b;
-            margin-top: 4px;
-        }
-        
-        .app-container {
-            display: none;
-        }
-        
-        .app-container.visible {
-            display: block;
-        }
     </style>
 </head>
 <body>
-    <!-- LOGIN PAGE -->
-    <div id="loginPage" class="login-page">
-        <div class="login-container">
+
+    <!-- ====== LOGIN OVERLAY ====== -->
+    <div id="loginOverlay" class="login-overlay">
+        <div class="login-box">
             <div class="login-logo">
                 <h1>🏠 DomPay</h1>
                 <p>Идоракунии шартномаҳои хариди хона</p>
             </div>
             
             <div class="login-tabs">
-                <button class="login-tab active" onclick="switchLoginTab('login')">Дохилшавӣ</button>
-                <button class="login-tab" onclick="switchLoginTab('signup')">Сабти ном</button>
+                <button class="ltab active" onclick="switchLTab('login')">🔑 Дохилшавӣ</button>
+                <button class="ltab" onclick="switchLTab('signup')">📝 Сабти ном</button>
             </div>
             
-            <div id="loginError" class="login-error"></div>
-            <div id="loginSuccess" class="login-success"></div>
+            <div id="lerror" class="lerror"></div>
+            <div id="lsuccess" class="lsuccess"></div>
             
-            <div id="loginTabContent" class="login-tab-content active">
-                <form onsubmit="handleLogin(event)">
-                    <div class="login-form-group">
-                        <label>Email</label>
-                        <input type="email" id="loginEmail" required placeholder="admin@dompay.tj">
-                    </div>
-                    <div class="login-form-group">
-                        <label>Парол</label>
-                        <input type="password" id="loginPassword" required placeholder="••••••••">
-                    </div>
-                    <button type="submit" class="login-btn" id="loginBtn">Дохил шудан</button>
-                </form>
+            <!-- ДОХИЛШАВӢ -->
+            <div id="lformLogin" class="lform active">
+                <div class="lgroup">
+                    <label>📧 Email</label>
+                    <input type="email" id="lEmail" placeholder="admin@dompay.tj" required>
+                </div>
+                <div class="lgroup">
+                    <label>🔒 Парол</label>
+                    <input type="password" id="lPass" placeholder="••••••••" required>
+                </div>
+                <button class="lbtn" id="lBtnLogin" onclick="doLogin()">Дохил шудан →</button>
             </div>
             
-            <div id="signupTabContent" class="login-tab-content">
-                <form onsubmit="handleSignup(event)">
-                    <div class="login-form-group">
-                        <label>Email</label>
-                        <input type="email" id="signupEmail" required placeholder="admin@dompay.tj">
-                        <div class="login-helper">Барои дастрасӣ ба барнома</div>
-                    </div>
-                    <div class="login-form-group">
-                        <label>Парол</label>
-                        <input type="password" id="signupPassword" required placeholder="Ҳадди ақал 6 аломат">
-                        <div class="login-helper">Ҳадди ақал 6 аломат</div>
-                    </div>
-                    <div class="login-form-group">
-                        <label>Такрори парол</label>
-                        <input type="password" id="signupPasswordConfirm" required placeholder="Паролро такрор кунед">
-                    </div>
-                    <button type="submit" class="login-btn" id="signupBtn">Сабти ном</button>
-                </form>
+            <!-- САБТИ НОМ -->
+            <div id="lformSignup" class="lform">
+                <div class="lgroup">
+                    <label>📧 Email</label>
+                    <input type="email" id="sEmail" placeholder="email@example.com" required>
+                    <div class="lhint">Ин email барои дохилшавӣ истифода мешавад</div>
+                </div>
+                <div class="lgroup">
+                    <label>🔒 Парол</label>
+                    <input type="password" id="sPass" placeholder="Ҳадди ақал 6 аломат" required>
+                </div>
+                <div class="lgroup">
+                    <label>🔒 Такрори парол</label>
+                    <input type="password" id="sPass2" placeholder="Паролро такрор кунед" required>
+                </div>
+                <button class="lbtn" id="lBtnSignup" onclick="doSignup()">Сабти ном ✓</button>
             </div>
         </div>
     </div>
 
-    <!-- MAIN APP -->
-    <div id="appContainer" class="app-container">
-    </style>
-</head>
-<body>
+    <!-- ====== БАРНОМАИ АСОСӢ ====== -->
+    <div id="mainApp" class="app-hidden">
     <div class="container">
         <header>
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
                 <div>
                     <h1>🏠 DomPay</h1>
                     <div class="subtitle">Идоракунии шартномаҳои хариди хона ва пардохтҳо</div>
                 </div>
-                <div id="syncStatus" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: rgba(255,255,255,0.2); border-radius: 8px; font-size: 0.85rem;">
-                    <span id="syncIcon">🔄</span>
-                    <span id="syncText">Боргирӣ...</span>
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <div id="syncStatus" style="display:inline-flex; align-items:center; gap:6px; padding:7px 14px; background:rgba(255,255,255,0.2); border-radius:8px; font-size:0.85rem;">
+                        <span id="syncIcon">🔄</span>
+                        <span id="syncText">Боргирӣ...</span>
+                    </div>
+                    <div id="userInfoDiv" style="display:flex; align-items:center; gap:8px;"></div>
                 </div>
             </div>
         </header>
@@ -908,170 +765,14 @@
         </div>
     </div>
 
-    <!-- Supabase JS SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
     <script>
-        // ⚠️ ГУЗОШТАНИ URL ВА KEY
-        const SUPABASE_URL = 'https://rqesqppmasqthowvqypb.supabase.co';
-        const SUPABASE_ANON_KEY = 'sb_publishable_Q9SIZ27tEc_EClUAkKP6oA_V7SFn-1T';
-        
-        let supabaseClient = null;
-        
-        // Check authentication before loading page
-        (async function checkAuthBeforeLoad() {
-            if (SUPABASE_URL === 'YOUR_SUPABASE_URL_HERE' || SUPABASE_ANON_KEY === 'YOUR_SUPABASE_ANON_KEY_HERE') {
-                updateSyncStatus('offline', 'URL ва KEY лозим');
-                console.warn('⚠️ Гузоштани SUPABASE_URL ва SUPABASE_ANON_KEY дар код лозим!');
-                return;
-            }
-            
-            if (typeof window.supabase === 'undefined') {
-                updateSyncStatus('offline', 'SDK бор нашуд');
-                return;
-            }
-            
-            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-            
-            // Check if user is logged in
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            
-            if (!session) {
-                // Not logged in - redirect to login page
-                window.location.href = 'login.html';
-                return;
-            }
-            
-            // User is logged in - continue
-            updateSyncStatus('online', 'Онлайн');
-            
-            // Add logout button
-            addLogoutButton(session.user.email);
-        })();
-        
-        function initSupabase() {
-            // Already initialized in checkAuthBeforeLoad
-            return supabaseClient !== null;
-        }
-        
-        function updateSyncStatus(status, text) {
-            const icon = document.getElementById('syncIcon');
-            const textEl = document.getElementById('syncText');
-            if (!icon || !textEl) return;
-            icon.textContent = status === 'online' ? '✅' : (status === 'offline' ? '❌' : '🔄');
-            textEl.textContent = text;
-        }
-        
-        function addLogoutButton(email) {
-            const syncStatus = document.getElementById('syncStatus');
-            if (!syncStatus) return;
-            
-            // Add user email and logout button
-            const userInfo = document.createElement('div');
-            userInfo.style.cssText = 'display: flex; align-items: center; gap: 12px; margin-left: 16px;';
-            userInfo.innerHTML = `
-                <span style="font-size: 0.85rem; opacity: 0.9;">${email}</span>
-                <button onclick="handleLogout()" style="
-                    padding: 6px 12px;
-                    background: rgba(255,255,255,0.2);
-                    border: 1px solid rgba(255,255,255,0.3);
-                    border-radius: 6px;
-                    color: white;
-                    font-size: 0.85rem;
-                    cursor: pointer;
-                    transition: all 0.2s;
-                " onmouseover="this.style.background='rgba(255,255,255,0.3)'" 
-                   onmouseout="this.style.background='rgba(255,255,255,0.2)'">
-                    🚪 Баромадан
-                </button>
-            `;
-            syncStatus.parentElement.appendChild(userInfo);
-        }
-        
-        async function handleLogout() {
-            if (!supabaseClient) return;
-            
-            if (confirm('Шумо мутмаин ҳастед, ки мехоҳед баромаед?')) {
-                await supabaseClient.auth.signOut();
-                window.location.href = 'login.html';
-            }
-        }
-        
-        // IndexedDB variables
-        let db;
-        const DB_NAME = 'DomPayDB';
-        const DB_VERSION = 1;
-        const STORE_NAME = 'contracts';
+        // State variables
 
         // Current state
         let currentContract = null;
         let tempPayments = []; // Барои пардохтҳое, ки то ҳол сабт нашудаанд
 
-        // Initialize DB
-        function initDB() {
-            return Promise.resolve(initSupabase());
-        }
-
-        // Get all contracts
-        async function getAllContracts() {
-            if (!supabaseClient) return [];
-            try {
-                const { data, error } = await supabaseClient.from('contracts').select('*').order('created_at', { ascending: false });
-                if (error) throw error;
-                return data || [];
-            } catch (error) {
-                console.error('Хатогӣ:', error);
-                return [];
-            }
-        }
-
-        // Get contract by ID
-        async function getContractById(id) {
-            if (!supabaseClient) return null;
-            try {
-                const { data, error } = await supabaseClient.from('contracts').select('*').eq('id', id).single();
-                if (error) throw error;
-                return data;
-            } catch (error) {
-                console.error('Хатогӣ:', error);
-                return null;
-            }
-        }
-
-        // Save contract
-        async function saveContractToDB(contract) {
-            if (!supabaseClient) throw new Error('Supabase пайваст нашудааст');
-            try {
-                const { data, error } = await supabaseClient.from('contracts').insert([contract]).select().single();
-                if (error) throw error;
-                return data;
-            } catch (error) {
-                throw error;
-            }
-        }
-
-        // Update contract
-        async function updateContractInDB(contract) {
-            if (!supabaseClient) throw new Error('Supabase пайваст нашудааст');
-            try {
-                const { data, error } = await supabaseClient.from('contracts').update(contract).eq('id', contract.id).select().single();
-                if (error) throw error;
-                return data;
-            } catch (error) {
-                throw error;
-            }
-        }
-
-        // Delete contract
-        async function deleteContractFromDB(id) {
-            if (!supabaseClient) throw new Error('Supabase пайваст нашудааст');
-            try {
-                const { error } = await supabaseClient.from('contracts').delete().eq('id', id);
-                if (error) throw error;
-            } catch (error) {
-                throw error;
-            }
-        }
+        // DB functions defined below in Supabase section
 
         // Load contracts list
         async function loadContractsList() {
@@ -1083,7 +784,7 @@
                 contracts.forEach(contract => {
                     const option = document.createElement('option');
                     option.value = contract.id;
-                    option.textContent = `${contract.buyer_name} | ${contract.contract_no} | ${contract.contract_name}`;
+                    option.textContent = `${contract.buyer_name || ''} | ${contract.contract_no || ''} | ${contract.contract_name || ''}`;
                     select.appendChild(option);
                 });
             } catch (error) {
@@ -1890,613 +1591,280 @@
             } catch (error) {
                 console.error('Хатогӣ дар оғоз:', error);
                 alert('Хатогӣ: ' + error.message);
-    </div>
-
-    <!-- Supabase SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
-    <script>
-        // ⚠️ ГУЗОШТАНИ URL ВА KEY
-        const SUPABASE_URL = 'YOUR_SUPABASE_URL_HERE';
-        const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY_HERE';
-        
-        let supabaseClient = null;
-        let currentUser = null;
-        let userRole = null; // 'admin' ё 'viewer'
-        
-        // Initialize and check auth
-        (async function init() {
-            if (SUPABASE_URL === 'YOUR_SUPABASE_URL_HERE' || SUPABASE_ANON_KEY === 'YOUR_SUPABASE_ANON_KEY_HERE') {
-                showLoginError('Лутфан URL ва KEY-и Supabase-ро дар код гузоред!');
-                return;
-            }
-            
-            if (typeof window.supabase === 'undefined') {
-                showLoginError('Supabase SDK бор нашуд');
-                return;
-            }
-            
-            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-            
-            // Check if logged in
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            
-            if (session) {
-                currentUser = session.user;
-                // Гирифтани роли корбар аз база
-                await loadUserRole(currentUser.email);
-                showApp();
-            } else {
-                showLogin();
-            }
-        })();
-        
-        function showLogin() {
-            document.getElementById('loginPage').classList.remove('hidden');
-            document.getElementById('appContainer').classList.remove('visible');
-        }
-        
-        function showApp() {
-            document.getElementById('loginPage').classList.add('hidden');
-            document.getElementById('appContainer').classList.add('visible');
-            
-            if (currentUser) {
-                updateSyncStatus('online', 'Онлайн');
-                addLogoutButton(currentUser.email, userRole);
-                
-                // Агар viewer бошад, тугмаҳоро пинҳон кунед
-                applyRoleRestrictions();
-            }
-            
-            // Initialize app
-            initDB();
-        }
-        
-        function switchLoginTab(tab) {
-            document.querySelectorAll('.login-tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.login-tab-content').forEach(t => t.classList.remove('active'));
-            
-            if (tab === 'login') {
-                document.querySelectorAll('.login-tab')[0].classList.add('active');
-                document.getElementById('loginTabContent').classList.add('active');
-            } else {
-                document.querySelectorAll('.login-tab')[1].classList.add('active');
-                document.getElementById('signupTabContent').classList.add('active');
-            }
-            
-            hideLoginError();
-            hideLoginSuccess();
-        }
-        
-        async function handleLogin(e) {
-            e.preventDefault();
-            
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            const btn = document.getElementById('loginBtn');
-            
-            btn.disabled = true;
-            btn.textContent = 'Лутфан интизор шавед...';
-            
-            hideLoginError();
-            hideLoginSuccess();
-            
-            try {
-                const { data, error } = await supabaseClient.auth.signInWithPassword({
-                    email: email,
-                    password: password
-                });
-                
-                if (error) throw error;
-                
-                currentUser = data.user;
-                
-                // Гирифтани роли корбар
-                await loadUserRole(email);
-                
-                showLoginSuccess('Муваффақ! Дар ҳоли боргирӣ...');
-                
-                setTimeout(() => {
-                    showApp();
-                }, 1000);
-                
-            } catch (error) {
-                console.error('Login error:', error);
-                
-                if (error.message.includes('Invalid login credentials')) {
-                    showLoginError('Email ё парол нодуруст аст');
-                } else {
-                    showLoginError('Хатогӣ: ' + error.message);
-                }
-                
-                btn.disabled = false;
-                btn.textContent = 'Дохил шудан';
-            }
-        }
-        
-        async function handleSignup(e) {
-            e.preventDefault();
-            
-            const email = document.getElementById('signupEmail').value;
-            const password = document.getElementById('signupPassword').value;
-            const passwordConfirm = document.getElementById('signupPasswordConfirm').value;
-            const btn = document.getElementById('signupBtn');
-            
-            hideLoginError();
-            hideLoginSuccess();
-            
-            if (password !== passwordConfirm) {
-                showLoginError('Паролҳо мувофиқат намекунанд');
-                return;
-            }
-            
-            if (password.length < 6) {
-                showLoginError('Парол бояд ҳадди ақал 6 аломат бошад');
-                return;
-            }
-            
-            btn.disabled = true;
-            btn.textContent = 'Дар ҳоли сабт...';
-            
-            try {
-                const { data, error } = await supabaseClient.auth.signUp({
-                    email: email,
-                    password: password
-                });
-                
-                if (error) throw error;
-                
-                if (data.user && !data.session) {
-                    showLoginSuccess('Ҳисоб сохта шуд! Лутфан email-и худро тасдиқ кунед.');
-                    btn.disabled = false;
-                    btn.textContent = 'Сабти ном';
-                } else {
-                    currentUser = data.user;
-                    showLoginSuccess('Ҳисоб сохта шуд! Дар ҳоли боргирӣ...');
-                    
-                    setTimeout(() => {
-                        showApp();
-                    }, 1000);
-                }
-                
-            } catch (error) {
-                console.error('Signup error:', error);
-                
-                if (error.message.includes('already registered')) {
-                    showLoginError('Ин email аллакай сабт шудааст');
-                } else {
-                    showLoginError('Хатогӣ: ' + error.message);
-                }
-                
-                btn.disabled = false;
-                btn.textContent = 'Сабти ном';
-            }
-        }
-        
-        function showLoginError(msg) {
-            const el = document.getElementById('loginError');
-            el.textContent = msg;
-            el.style.display = 'block';
-        }
-        
-        function hideLoginError() {
-            document.getElementById('loginError').style.display = 'none';
-        }
-        
-        function showLoginSuccess(msg) {
-            const el = document.getElementById('loginSuccess');
-            el.textContent = msg;
-            el.style.display = 'block';
-        }
-        
-        function hideLoginSuccess() {
-            document.getElementById('loginSuccess').style.display = 'none';
-        }
-        
-        function updateSyncStatus(status, text) {
-            const icon = document.getElementById('syncIcon');
-            const textEl = document.getElementById('syncText');
-            if (!icon || !textEl) return;
-            icon.textContent = status === 'online' ? '✅' : (status === 'offline' ? '❌' : '🔄');
-            textEl.textContent = text;
-        }
-        
-        function addLogoutButton(email, role) {
-            const syncStatus = document.getElementById('syncStatus');
-            if (!syncStatus || document.getElementById('logoutBtn')) return;
-            
-            const roleText = role === 'admin' ? '👑 Админ' : '👁️ Тамошобин';
-            const roleColor = role === 'admin' ? '#10b981' : '#f59e0b';
-            
-            const userInfo = document.createElement('div');
-            userInfo.style.cssText = 'display: flex; align-items: center; gap: 12px; margin-left: 16px;';
-            userInfo.innerHTML = `
-                <span style="font-size: 0.85rem; opacity: 0.9;">${email}</span>
-                <span style="font-size: 0.75rem; padding: 4px 8px; background: ${roleColor}; border-radius: 4px; font-weight: 600;">${roleText}</span>
-                <button id="logoutBtn" onclick="handleLogout()" style="
-                    padding: 6px 12px;
-                    background: rgba(255,255,255,0.2);
-                    border: 1px solid rgba(255,255,255,0.3);
-                    border-radius: 6px;
-                    color: white;
-                    font-size: 0.85rem;
-                    cursor: pointer;
-                    transition: all 0.2s;
-                " onmouseover="this.style.background='rgba(255,255,255,0.3)'" 
-                   onmouseout="this.style.background='rgba(255,255,255,0.2)'">
-                    🚪 Баромадан
-                </button>
-            `;
-            syncStatus.parentElement.appendChild(userInfo);
-        }
-        
-        async function handleLogout() {
-            if (!supabaseClient) return;
-            
-            if (confirm('Шумо мутмаин ҳастед, ки мехоҳед баромаед?')) {
-                await supabaseClient.auth.signOut();
-                currentUser = null;
-                window.location.reload();
-            }
-        }
-        
-        // Check user role by email (Simple method)
-        async function loadUserRole(email) {
-            // Агар email "admin@dompay.tj" бошад → admin
-            // Агар email дигар бошад → viewer
-            if (email === 'admin@dompay.tj') {
-                userRole = 'admin';
-                console.log('Роли корбар: Админ');
-            } else {
-                userRole = 'viewer';
-                console.log('Роли корбар: Тамошобин');
-            }
-        }
-        
-        // Apply role restrictions to UI
-        function applyRoleRestrictions() {
-            if (userRole === 'viewer') {
-                // Пинҳон кардани тугмаҳои вироиш
-                const editButtons = [
-                    'saveContract', // Сабт ҳамчун нав
-                    'updateContract', // Навсозӣ
-                    'deleteContract', // Нест кардан
-                    'addPayment' // Супордам
-                ];
-                
-                editButtons.forEach(btnId => {
-                    const elements = document.querySelectorAll(`[onclick*="${btnId}"]`);
-                    elements.forEach(el => {
-                        el.style.display = 'none';
-                    });
-                });
-                
-                // Майдонҳоро readonly кардан
-                const inputs = document.querySelectorAll('#appContainer input, #appContainer select');
-                inputs.forEach(input => {
-                    input.readOnly = true;
-                    input.disabled = true;
-                    input.style.cursor = 'not-allowed';
-                    input.style.opacity = '0.7';
-                });
-                
-                // Нишон додани паём
-                const header = document.querySelector('#appContainer header');
-                if (header) {
-                    const notice = document.createElement('div');
-                    notice.style.cssText = 'background: #fef3c7; color: #92400e; padding: 12px; border-radius: 8px; margin-bottom: 20px; text-align: center; font-weight: 500;';
-                    notice.innerHTML = '👁️ Шумо дар реҷаи тамошо ҳастед. Вироиш кардан имконнопазир.';
-                    header.after(notice);
-                }
-            }
-        }
-        
-        function initSupabase() {
-            return supabaseClient !== null;
-        }
-        
-        // Rest of DomPay code continues...
-        let db;
-        const DB_NAME = 'DomPayDB';
-        const DB_VERSION = 1;
-        const STORE_NAME = 'contracts';
-                alert('Лутфан санаро интихоб кунед');
-                return;
-            }
-            
-            try {
-                const contracts = await getAllContracts();
-                const tbody = document.getElementById('dailyTableBody');
-                tbody.innerHTML = '';
-                
-                const reportDate = new Date(date);
-                reportDate.setHours(0, 0, 0, 0);
-                let found = false;
-                
-                contracts.forEach(contract => {
-                    const start_date = new Date(contract.start_date);
-                    const months_count = contract.months_count || 0;
-                    const house_price = contract.house_price || 0;
-                    const initial_percent = contract.initial_percent || 0;
-                    const initialNeed = house_price * initial_percent / 100;
-                    const loanAmount = house_price - initialNeed;
-                    const monthlyPayment = loanAmount / months_count;
-                    
-                    const payments = contract.payments || [];
-                    const totalPaid = payments.reduce((sum, p) => sum + (parseFloat(p.amount) || 0), 0);
-                    
-                    // 1. Санҷиши пешпардохт
-                    if (totalPaid < initialNeed) {
-                        const initialRemaining = initialNeed - totalPaid;
-                        found = true;
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${contract.buyer_name}</td>
-                            <td>${contract.buyer_phone}</td>
-                            <td>${contract.contract_no}</td>
-                            <td>${contract.contract_name}</td>
-                            <td>${formatNumber(initialRemaining)} <span style="color: #f59e0b;">(Пешпардохт ${initial_percent}%)</span></td>
-                        `;
-                        tbody.appendChild(row);
-                        return; // Агар пешпардохт пур нашуда бошад, моҳҳоро санҷидан лозим нест
-                    }
-                    
-                    // 2. Санҷиши моҳҳо
-                    const paidForMonths = totalPaid - initialNeed;
-                    let totalOwed = 0;
-                    let monthsOwed = [];
-                    
-                    for (let i = 0; i < months_count; i++) {
-                        const monthDate = new Date(start_date);
-                        monthDate.setMonth(start_date.getMonth() + i);
-                        monthDate.setHours(0, 0, 0, 0);
-                        
-                        // Агар санаи моҳ <= санаи ҳисобот (таърихи гузашта ва имрӯз)
-                        if (monthDate <= reportDate) {
-                            const paidForCurrentMonth = Math.max(0, paidForMonths - (i * monthlyPayment));
-                            const remainingForThisMonth = Math.max(0, monthlyPayment - paidForCurrentMonth);
-                            
-                            if (remainingForThisMonth > 0) {
-                                totalOwed += remainingForThisMonth;
-                                const day = monthDate.getDate();
-                                const monthStr = monthDate.toLocaleDateString('ru-RU', { month: 'long' });
-                                const year = monthDate.getFullYear();
-                                monthsOwed.push(`${day} ${monthStr} ${year}`);
-                            }
-                        }
-                    }
-                    
-                    // Агар мизоҷ чизе бояд супорад
-                    if (totalOwed > 0) {
-                        found = true;
-                        const row = document.createElement('tr');
-                        const monthsList = monthsOwed.length > 0 ? `<br><small style="color: #64748b;">${monthsOwed.join(', ')}</small>` : '';
-                        row.innerHTML = `
-                            <td>${contract.buyer_name}</td>
-                            <td>${contract.buyer_phone}</td>
-                            <td>${contract.contract_no}</td>
-                            <td>${contract.contract_name}</td>
-                            <td>${formatNumber(totalOwed)} <span style="color: #ef4444;">(${monthsOwed.length} моҳ)</span>${monthsList}</td>
-                        `;
-                        tbody.appendChild(row);
-                    }
-                });
-                
-                if (!found) {
-                    tbody.innerHTML = `
-                        <tr><td colspan="5" class="empty-state">
-                            <div class="empty-state-icon">✓</div>
-                            <div>Дар ин сана пардохтҳои насупорида нестанд</div>
-                        </td></tr>
-                    `;
-                }
-            } catch (error) {
-                console.error('Хатогӣ дар ҳисоботи рӯзона:', error);
-                alert('Хатогӣ: ' + error.message);
-            }
-        }
-
-        // Export to JSON
-        async function exportToJSON() {
-            try {
-                const contracts = await getAllContracts();
-                const dataStr = JSON.stringify(contracts, null, 2);
-                const dataBlob = new Blob([dataStr], { type: 'application/json' });
-                const url = URL.createObjectURL(dataBlob);
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = `DomPay_backup_${new Date().toISOString().split('T')[0]}.json`;
-                link.click();
-            } catch (error) {
-                console.error('Хатогӣ дар экспорт:', error);
-                alert('Хатогӣ: ' + error.message);
-            }
-        }
-
-        // Import from JSON
-        async function importFromJSON(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            
-            if (!confirm('Шумо мутмаин ҳастед? Ин амал ҳамаи маълумоти ҷориро иваз мекунад!')) {
-                event.target.value = '';
-                return;
-            }
-            
-            try {
-                const text = await file.text();
-                const contracts = JSON.parse(text);
-                
-                // Clear existing data
-                const transaction = db.transaction([STORE_NAME], 'readwrite');
-                const objectStore = transaction.objectStore(STORE_NAME);
-                await new Promise((resolve, reject) => {
-                    const request = objectStore.clear();
-                    request.onsuccess = resolve;
-                    request.onerror = () => reject(request.error);
-                });
-                
-                // Add imported data
-                for (const contract of contracts) {
-                    delete contract.id; // Remove old IDs
-                    await saveContractToDB(contract);
-                }
-                
-                alert('Маълумот бомуваффақият ворид шуд!');
-                await loadContractsList();
-                clearForm();
-            } catch (error) {
-                console.error('Хатогӣ дар импорт:', error);
-                alert('Хатогӣ: ' + error.message);
-            }
-            
-            event.target.value = '';
-        }
-
-        // Export to CSV
-        async function exportToCSV() {
-            try {
-                const contracts = await getAllContracts();
-                let csv = '\uFEFF'; // UTF-8 BOM
-                csv += '№ шартнома;Ному насаб;Телефон;Номи шартнома;Нархи хона;% пешпардохт;Моҳҳо;Санаи пардохт;Маблағи пардохт;Боқимондаи умумӣ\n';
-                
-                contracts.forEach(contract => {
-                    const payments = contract.payments || [];
-                    const house_price = contract.house_price || 0;
-                    
-                    if (payments.length === 0) {
-                        csv += `${contract.contract_no};${contract.buyer_name};${contract.buyer_phone};${contract.contract_name};${house_price};${contract.initial_percent};${contract.months_count};;;\n`;
-                    } else {
-                        let cumulativePaid = 0;
-                        payments.forEach(payment => {
-                            cumulativePaid += parseFloat(payment.amount) || 0;
-                            const remainAfter = house_price - cumulativePaid;
-                            csv += `${contract.contract_no};${contract.buyer_name};${contract.buyer_phone};${contract.contract_name};${house_price};${contract.initial_percent};${contract.months_count};${payment.date};${payment.amount};${remainAfter}\n`;
-                        });
-                    }
-                });
-                
-                const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = `DomPay_export_${new Date().toISOString().split('T')[0]}.csv`;
-                link.click();
-            } catch (error) {
-                console.error('Хатогӣ дар экспорт CSV:', error);
-                alert('Хатогӣ: ' + error.message);
-            }
-        }
-
-        // Export daily to CSV
-        async function exportDailyToCSV() {
-            const date = document.getElementById('dailyReportDate').value;
-            
-            if (!date) {
-                alert('Лутфан санаро интихоб кунед');
-                return;
-            }
-            
-            try {
-                const contracts = await getAllContracts();
-                let csv = '\uFEFF'; // UTF-8 BOM
-                csv += 'Ному насаб;Телефон;№ шартнома;Номи шартнома;Маблағ;Тавзеҳот\n';
-                
-                const reportDate = new Date(date);
-                reportDate.setHours(0, 0, 0, 0);
-                
-                contracts.forEach(contract => {
-                    const start_date = new Date(contract.start_date);
-                    const months_count = contract.months_count || 0;
-                    const house_price = contract.house_price || 0;
-                    const initial_percent = contract.initial_percent || 0;
-                    const initialNeed = house_price * initial_percent / 100;
-                    const loanAmount = house_price - initialNeed;
-                    const monthlyPayment = loanAmount / months_count;
-                    
-                    const payments = contract.payments || [];
-                    const totalPaid = payments.reduce((sum, p) => sum + (parseFloat(p.amount) || 0), 0);
-                    
-                    // 1. Санҷиши пешпардохт
-                    if (totalPaid < initialNeed) {
-                        const initialRemaining = initialNeed - totalPaid;
-                        csv += `${contract.buyer_name};${contract.buyer_phone};${contract.contract_no};${contract.contract_name};${initialRemaining};Пешпардохт ${initial_percent}%\n`;
-                        return;
-                    }
-                    
-                    // 2. Санҷиши моҳҳо
-                    const paidForMonths = totalPaid - initialNeed;
-                    let totalOwed = 0;
-                    let monthsOwed = [];
-                    
-                    for (let i = 0; i < months_count; i++) {
-                        const monthDate = new Date(start_date);
-                        monthDate.setMonth(start_date.getMonth() + i);
-                        monthDate.setHours(0, 0, 0, 0);
-                        
-                        if (monthDate <= reportDate) {
-                            const paidForCurrentMonth = Math.max(0, paidForMonths - (i * monthlyPayment));
-                            const remainingForThisMonth = Math.max(0, monthlyPayment - paidForCurrentMonth);
-                            
-                            if (remainingForThisMonth > 0) {
-                                totalOwed += remainingForThisMonth;
-                                const day = monthDate.getDate();
-                                const monthStr = monthDate.toLocaleDateString('ru-RU', { month: 'long' });
-                                const year = monthDate.getFullYear();
-                                monthsOwed.push(`${day} ${monthStr} ${year}`);
-                            }
-                        }
-                    }
-                    
-                    if (totalOwed > 0) {
-                        const monthsList = monthsOwed.join(', ');
-                        csv += `${contract.buyer_name};${contract.buyer_phone};${contract.contract_no};${contract.contract_name};${totalOwed};${monthsOwed.length} моҳ: ${monthsList}\n`;
-                    }
-                });
-                
-                const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = `DomPay_daily_${date}.csv`;
-                link.click();
-            } catch (error) {
-                console.error('Хатогӣ дар экспорт CSV:', error);
-                alert('Хатогӣ: ' + error.message);
-            }
-        }
-
-        // Format number
-        function formatNumber(num) {
-            return new Intl.NumberFormat('tg-TJ').format(num);
-        }
-
-        // Format date
-        function formatDate(dateStr) {
-            const date = new Date(dateStr);
-            return date.toLocaleDateString('tg-TJ');
-        }
-
-        // Initialize app
-        async function init() {
-            try {
-                await initDB();
-                await loadContractsList();
-                
-                // Set today's date as default
-                const today = new Date().toISOString().split('T')[0];
-                document.getElementById('paymentDate').value = today;
-                document.getElementById('dailyReportDate').value = today;
-                document.getElementById('contract_date').value = today;
-                document.getElementById('start_date').value = today;
-            } catch (error) {
-                console.error('Хатогӣ дар оғоз:', error);
-                alert('Хатогӣ: ' + error.message);
             }
         }
 
         // Start app
         window.addEventListener('DOMContentLoaded', init);
     </script>
+</div><!-- /mainApp -->
+
+<!-- ====== SUPABASE ====== -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// ============================================================
+// ⚠️ URL ВА KEY-РО ГУЗОРЕД
+// ============================================================
+const SUPABASE_URL = 'https://rqesqppmasqthowvqypb.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_Q9SIZ27tEc_EClUAkKP6oA_V7SFn-1T';
+
+// ADMIN EMAIL - танҳо ин email админ аст
+const ADMIN_EMAIL = 'admin@dompay.tj';
+
+let supabaseClient = null;
+let currentUser = null;
+let userRole = null;
+
+// ============================================================
+// ОҒОЗ - санҷиши login
+// ============================================================
+(async function start() {
+    if (SUPABASE_URL === 'YOUR_SUPABASE_URL_HERE') {
+        showLError('⚠️ Лутфан SUPABASE_URL ва SUPABASE_ANON_KEY-ро дар код гузоред!');
+        return;
+    }
+
+    if (typeof window.supabase === 'undefined') {
+        showLError('⚠️ Supabase SDK бор нашуд. Интернетро санҷед!');
+        return;
+    }
+
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const { data: { session } } = await supabaseClient.auth.getSession();
+
+    if (session) {
+        currentUser = session.user;
+        userRole = currentUser.email === ADMIN_EMAIL ? 'admin' : 'viewer';
+        showMainApp();
+    } else {
+        showLoginPage();
+    }
+})();
+
+// ============================================================
+// НИШОН ДОДАН / ПИНҲОН КАРДАН
+// ============================================================
+function showLoginPage() {
+    document.getElementById('loginOverlay').classList.remove('hidden');
+    document.getElementById('mainApp').classList.add('app-hidden');
+}
+
+function showMainApp() {
+    document.getElementById('loginOverlay').classList.add('hidden');
+    document.getElementById('mainApp').classList.remove('app-hidden');
+    
+    // Нишон додани маълумоти корбар
+    const roleText = userRole === 'admin' ? '👑 Админ' : '👁️ Тамошобин';
+    const roleColor = userRole === 'admin' ? '#10b981' : '#f59e0b';
+    document.getElementById('userInfoDiv').innerHTML = `
+        <span style="font-size:0.82rem; opacity:0.9;">${currentUser.email}</span>
+        <span style="font-size:0.75rem; padding:4px 10px; background:${roleColor}; border-radius:20px; font-weight:600;">${roleText}</span>
+        <button onclick="doLogout()" style="padding:6px 12px; background:rgba(255,255,255,0.2); border:1px solid rgba(255,255,255,0.3); border-radius:6px; color:white; font-size:0.82rem; cursor:pointer;">🚪 Баромадан</button>
+    `;
+
+    document.getElementById('syncIcon').textContent = '✅';
+    document.getElementById('syncText').textContent = 'Онлайн';
+
+    // Агар viewer → тугмаҳоро пинҳон кунед
+    if (userRole === 'viewer') {
+        applyViewerMode();
+    }
+
+    // Барнома оғоз
+    initDB();
+}
+
+// ============================================================
+// VIEWER MODE
+// ============================================================
+function applyViewerMode() {
+    // Огоҳнома
+    const notice = document.createElement('div');
+    notice.style.cssText = 'background:#fef3c7; color:#92400e; padding:12px 20px; text-align:center; font-weight:500; font-size:0.9rem; margin-bottom:0;';
+    notice.innerHTML = '👁️ Шумо дар реҷаи тамошо ҳастед. Вироиш кардан мумкин нест.';
+    document.getElementById('mainApp').prepend(notice);
+
+    // Пинҳон кардани тугмаҳои вироиш
+    setTimeout(() => {
+        // Тугмаҳои функсионалӣ
+        ['onclick*="saveContract"', 'onclick*="updateContract"', 'onclick*="deleteContract"', 
+         'onclick*="addPayment"', 'onclick*="importFrom"'].forEach(sel => {
+            document.querySelectorAll(`[${sel}]`).forEach(el => el.style.display = 'none');
+        });
+
+        // Тугмаҳои матн
+        document.querySelectorAll('button').forEach(btn => {
+            const txt = btn.textContent.trim();
+            if (['Сабт ҳамчун нав', 'Навсозӣ', 'Нест кардан', 'СУПОРДАМ', 
+                 'Импорт JSON'].some(t => txt.includes(t))) {
+                btn.style.display = 'none';
+            }
+        });
+
+        // Майдонҳо readonly
+        document.querySelectorAll('#mainApp input:not([type=search]):not([type=date]), #mainApp select').forEach(el => {
+            el.readOnly = true;
+            el.style.opacity = '0.75';
+            el.style.cursor = 'not-allowed';
+        });
+    }, 500);
+}
+
+// ============================================================
+// LOGIN ФУНКСИЯҲО
+// ============================================================
+function switchLTab(tab) {
+    document.querySelectorAll('.ltab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.lform').forEach(f => f.classList.remove('active'));
+    
+    if (tab === 'login') {
+        document.querySelectorAll('.ltab')[0].classList.add('active');
+        document.getElementById('lformLogin').classList.add('active');
+    } else {
+        document.querySelectorAll('.ltab')[1].classList.add('active');
+        document.getElementById('lformSignup').classList.add('active');
+    }
+    hideLMsg();
+}
+
+async function doLogin() {
+    const email = document.getElementById('lEmail').value.trim();
+    const pass = document.getElementById('lPass').value;
+    const btn = document.getElementById('lBtnLogin');
+    
+    if (!email || !pass) { showLError('Лутфан ҳамаи майдонҳоро пур кунед'); return; }
+    
+    btn.disabled = true;
+    btn.textContent = '⏳ Лутфан интизор шавед...';
+    hideLMsg();
+    
+    try {
+        const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password: pass });
+        if (error) throw error;
+        
+        currentUser = data.user;
+        userRole = email === ADMIN_EMAIL ? 'admin' : 'viewer';
+        
+        showLSuccess('✅ Хуш омадед!');
+        setTimeout(() => showMainApp(), 800);
+        
+    } catch (err) {
+        const msg = err.message.includes('Invalid login credentials') 
+            ? 'Email ё парол нодуруст!' 
+            : 'Хатогӣ: ' + err.message;
+        showLError(msg);
+        btn.disabled = false;
+        btn.textContent = 'Дохил шудан →';
+    }
+}
+
+async function doSignup() {
+    const email = document.getElementById('sEmail').value.trim();
+    const pass = document.getElementById('sPass').value;
+    const pass2 = document.getElementById('sPass2').value;
+    const btn = document.getElementById('lBtnSignup');
+    
+    if (!email || !pass || !pass2) { showLError('Лутфан ҳамаи майдонҳоро пур кунед'); return; }
+    if (pass !== pass2) { showLError('Паролҳо мувофиқат намекунанд!'); return; }
+    if (pass.length < 6) { showLError('Парол бояд ҳадди ақал 6 аломат бошад!'); return; }
+    
+    btn.disabled = true;
+    btn.textContent = '⏳ Дар ҳоли сабт...';
+    hideLMsg();
+    
+    try {
+        const { data, error } = await supabaseClient.auth.signUp({ email, password: pass });
+        if (error) throw error;
+        
+        if (data.session) {
+            currentUser = data.user;
+            userRole = email === ADMIN_EMAIL ? 'admin' : 'viewer';
+            showLSuccess('✅ Ҳисоб сохта шуд!');
+            setTimeout(() => showMainApp(), 800);
+        } else {
+            showLSuccess('✅ Ҳисоб сохта шуд! Email-и худро тасдиқ кунед.');
+        }
+        btn.disabled = false;
+        btn.textContent = 'Сабти ном ✓';
+        
+    } catch (err) {
+        const msg = err.message.includes('already registered') 
+            ? 'Ин email аллакай сабт шудааст!' 
+            : 'Хатогӣ: ' + err.message;
+        showLError(msg);
+        btn.disabled = false;
+        btn.textContent = 'Сабти ном ✓';
+    }
+}
+
+async function doLogout() {
+    if (confirm('Мутмаин ҳастед?')) {
+        await supabaseClient.auth.signOut();
+        window.location.reload();
+    }
+}
+
+function showLError(msg) {
+    const el = document.getElementById('lerror');
+    el.textContent = msg;
+    el.style.display = 'block';
+    document.getElementById('lsuccess').style.display = 'none';
+}
+
+function showLSuccess(msg) {
+    const el = document.getElementById('lsuccess');
+    el.textContent = msg;
+    el.style.display = 'block';
+    document.getElementById('lerror').style.display = 'none';
+}
+
+function hideLMsg() {
+    document.getElementById('lerror').style.display = 'none';
+    document.getElementById('lsuccess').style.display = 'none';
+}
+
+// ============================================================
+// SUPABASE DB ФУНКСИЯҲО (IndexedDB → Supabase)
+// ============================================================
+function initDB() {
+    return Promise.resolve(true);
+}
+
+async function getAllContracts() {
+    if (!supabaseClient) return [];
+    const { data, error } = await supabaseClient.from('contracts').select('*').order('created_at', { ascending: false });
+    if (error) { console.error(error); return []; }
+    return data || [];
+}
+
+async function getContractById(id) {
+    if (!supabaseClient) return null;
+    const { data, error } = await supabaseClient.from('contracts').select('*').eq('id', id).single();
+    if (error) { console.error(error); return null; }
+    return data;
+}
+
+async function saveContractToDB(contract) {
+    if (!supabaseClient) throw new Error('Supabase пайваст нашудааст');
+    const { data, error } = await supabaseClient.from('contracts').insert([contract]).select().single();
+    if (error) throw error;
+    return data;
+}
+
+async function updateContractInDB(contract) {
+    if (!supabaseClient) throw new Error('Supabase пайваст нашудааст');
+    const { data, error } = await supabaseClient.from('contracts').update(contract).eq('id', contract.id).select().single();
+    if (error) throw error;
+    return data;
+}
+
+async function deleteContractFromDB(id) {
+    if (!supabaseClient) throw new Error('Supabase пайваст нашудааст');
+    const { error } = await supabaseClient.from('contracts').delete().eq('id', id);
+    if (error) throw error;
+}
+</script>
+
 </body>
 </html>
